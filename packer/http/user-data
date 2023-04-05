@@ -1,0 +1,43 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: et_EE
+  keyboard:
+    layout: ee
+  ssh:
+    install-server: true
+    allow-pw: true
+  #siia lisad paki nimekirja mida tahad oma kuldsesse imagesse saada
+    packages:
+    - qemu-guest-agent
+    - htop 
+    - mc
+    - iotop
+    - cloud-init
+  network:
+    network:
+      version: 2
+      ethernets:
+        ens18:
+          dhcp4: true
+          dhcp-identifier: mac
+  storage:
+    layout:
+      name: lvm
+    swap:
+      size: 1G
+  user-data:
+    package_upgrade: true
+    timezone: Europe/Tallinn
+    users:
+      - name: #kasutajanimi siia
+        passwd: #Parool siia 
+        groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+        lock-passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - # kasutaja ssh pub võti, kui kasutate
+  late-commands:
+    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
+
