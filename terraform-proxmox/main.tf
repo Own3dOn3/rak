@@ -35,7 +35,7 @@ resource "proxmox_vm_qemu" "test" {
     slot     = 0
     size     = "16G"
     type     = "scsi"
-    storage  = "ssd-data"
+    storage  = "local-lvm"
     #iothread = 1
     #storage_type = "lvm"
   }
