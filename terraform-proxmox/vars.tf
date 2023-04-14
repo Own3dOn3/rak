@@ -2,10 +2,10 @@ variable "ssh_key" {
   default = ""
 }
 variable "proxmox_host" {
-  default = "homelab-01"
+  default = ""
 }
 variable "template_name" {
-  default = "ubuntu-2004-cloud-img"
+  default = ""
 }
 
 variable "hostname" {
