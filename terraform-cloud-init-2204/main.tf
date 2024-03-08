@@ -1,7 +1,7 @@
 provider "proxmox" {
-  pm_api_url          = "https://10.0.1.2:8006/api2/json"
+  pm_api_url          = "https://x.x.x.x:8006/api2/json"
   pm_api_token_id     = "root@pam!root"
-  pm_api_token_secret = "d8e04059-a30b-4c93-9d1a-ce5718d049ed"
+  pm_api_token_secret = "supersecrettoken"
   pm_tls_insecure     = true
   pm_parallel         = 20
 }
