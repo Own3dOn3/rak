@@ -1,0 +1,4 @@
+    - name: Update network
+      ansible.builtin.template:
+        src: templates/netplan.yml.j2
+        dest: /etc/netplan/00-installer-config.yaml

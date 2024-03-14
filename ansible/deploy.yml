@@ -1,0 +1,11 @@
+- name: 1st conf
+  hosts: all
+  become: yes
+  vars_files:
+  - vars/variables.yml
+  gather_facts: yes
+  roles:
+  - netplan
+  - hostname
+
+    
