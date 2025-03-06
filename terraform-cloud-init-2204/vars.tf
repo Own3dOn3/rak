@@ -1,9 +1,9 @@
 variable "ssh_key" {
-  default = "putinsshkey"
+  default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJXaLale1naO5WM5jdqujD6wtTFUEFBmaGDbFKf1bUg ermo.saarits@gmail.com"
 }
 variable "proxmox_host" {
-  default = "proxmoxhost"
+  default = "proxmox1"
 }
 variable "template_name" {
-  default = "tepmpaltename"
+  default = "ubuntu-2404-cloudinit-template"
 }
