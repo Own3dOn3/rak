@@ -22,21 +22,20 @@ resource "proxmox_vm_qemu" "test" {
   sockets  = 1
   cpu_type  = "host"
   memory   = 2048
-  scsihw   = "virtio-scsi-pci"
-  bootdisk = "scsi0"
+  #scsihw   = "virtio-scsi-pci"
+  scsihw = "lsi"
+  bootdisk = "virtio0"
   hotplug  = "network,disk"
 
-
-  disks {   
-    virtio {
-      virtio0 {
-        disk {
-          size            = 20
-          cache           = "writeback"
-          storage         = "ssd-data"
-        }
+disks {   
+virtio {
+ virtio0 {
+    disk {
+    storage      = "ssd-data"
+    size         = "20G"
       }
     }
+}
 ide {
   ide2 {
     cloudinit {

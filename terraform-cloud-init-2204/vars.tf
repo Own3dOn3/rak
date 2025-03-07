@@ -5,5 +5,5 @@ variable "proxmox_host" {
   default = "proxmox1"
 }
 variable "template_name" {
-  default = "ubuntu-2404-cloudinit-template"
+  default = "ubuntu-2204-cloudinit-template"
 }
