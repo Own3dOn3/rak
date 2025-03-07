@@ -17,40 +17,30 @@ resource "proxmox_vm_qemu" "test" {
   #preprovision = true
   onboot      = true
   
-  #HW spec
+    #HW spec
   cores    = 2
   sockets  = 1
-  cpu_type  = "host"
+  cpu      = "host"
   memory   = 2048
-  #scsihw   = "virtio-scsi-pci"
-  scsihw = "lsi"
-  bootdisk = "virtio0"
+  scsihw   = "virtio-scsi-pci"
+  bootdisk = "scsi0"
   hotplug  = "network,disk"
 
-disks {   
-virtio {
- virtio0 {
-    disk {
-    storage      = "ssd-data"
-    size         = "20G"
-      }
-    }
-}
-ide {
-  ide2 {
-    cloudinit {
-    storage = "ssd-data"
-        }
-      }
-    }
+
+  disk {
+    slot     = 0
+    size     = "16G"
+    type     = "scsi"
+    storage  = "ssd-data"
   }
-  # if you want two NICs, just copy this whole network section and duplicate it   
-   network {
-        id = 0
-        model = "virtio"
-        bridge = "vmbr0"
-   
-    }
+
+  # if you want two NICs, just copy this whole network section and duplicate it
+  network {
+    model  = "virtio"
+    bridge = "vmbr0"
+
+
+  }
 
 boot = "order=virtio0"
 ipconfig0 = "ip=192.168.10.14${count.index + 1}/24,gw=192.168.10.1"
