@@ -1,54 +1,67 @@
 provider "proxmox" {
-  pm_api_url          = "https://192.168.10.120:8006/api2/json"
-  pm_api_token_id     = "root@pam!root"
-  pm_api_token_secret = "d126e673-3b73-4a0a-a550-f1a4dfde0975"
-  pm_tls_insecure     = true
-  pm_parallel         = 20
+  pm_api_url  = var.pm_api_url
+  pm_api_token_id = var.pm_api_token_id
+  pm_api_token_secret = var.pm_api_token_secret
+  pm_tls_insecure = true
+  pm_parallel = 10
 }
-resource "proxmox_vm_qemu" "test" {
-  count       = 1  
-  name        = "HL-test-0${count.index + 1}" #count.index starts at 0, so + 1 means this VM will be named test-vm-1 in proxmox
-  target_node = var.proxmox_host
-  clone       = var.template_name
-  full_clone  = true
-  agent       = 1
-  vmid        = "20${count.index + 1}"
-  os_type     = "cloud-init"
-  #preprovision = true
-  onboot      = true
-  
-    #HW spec
-  cores    = 2
-  sockets  = 1
-  cpu      = "host"
-  memory   = 2048
+
+resource "proxmox_vm_qemu" "vm" {
+#Hardware Setup
+
+  target_node = var.target_node
+  vmid    = "20${count.index + 1}"
+  count   = var.vm_count
+  name    = var.vm_name
+  cores   = var.cpu_cores
+  memory  = var.memory 
+  agent   = 1
+  clone   = var.template_name
+  full_clone  = true 
+  onboot = true
   scsihw   = "virtio-scsi-pci"
-  bootdisk = "scsi0"
-  hotplug  = "network,disk"
 
+   network {
+    id = 0
+    model = "virtio"
+    bridge = var.network_bridge
+    #tag =        ##Can be added if needed
+    }
 
-  disk {
-    slot     = 0
-    size     = "16G"
-    type     = "scsi"
-    storage  = "ssd-data"
+#Disk setup
+
+disks {
+    ide {
+      ide3 {
+        cloudinit {
+        storage = var.storage
+      }
+    }
+ }
+        scsi {
+            scsi0 {
+                disk {
+                size    = var.disk_size
+                storage = var.storage
+          }
+        }
+      }
+    } 
+
+  lifecycle {
+    ignore_changes = [
+      network,
+    ]
   }
 
-  # if you want two NICs, just copy this whole network section and duplicate it
-  network {
-    model  = "virtio"
-    bridge = "vmbr0"
 
+# Cloud init configuration
 
-  }
-
-boot = "order=virtio0"
-ipconfig0 = "ip=192.168.10.14${count.index + 1}/24,gw=192.168.10.1"
-
-
-  # sshkeys set using variables. the variable contains the text of the key.
-  ssh_user        = "ubuntu"
+  ciuser = var.ciuser
+  ipconfig0 = "ip=IPADDR${count.index + 1}/24,gw=GWADDR"
   sshkeys = <<EOF
-  ${var.ssh_key}
+     ${var.ssh_public_key}
   EOF
+
 }
+
