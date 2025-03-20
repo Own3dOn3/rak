@@ -1,11 +1,11 @@
 # rak
 Running terraform scipts
 
-# running terraform for the first time
+#running terraform for the first time
 terraform init
-# applyng terraform infrastructure
+#applyng terraform infrastructure
 terraform apply
-# Destroyng terraform infrastructure
+#Destroyng terraform infrastructure
 terraform destroy
 
 
