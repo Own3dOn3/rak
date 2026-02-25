@@ -1,7 +1,7 @@
 
 #!/bin/bash
 wget https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
-apt update -y && apt install libguestfs-tools -y
+apt update -y && apt install libguestfs-tools dhcpcd-base -y
 virt-customize -a noble-server-cloudimg-amd64.img --install qemu-guest-agent
 qm create 8000 --name "ubuntu-2404-cloudinit-template" --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
 qm importdisk 8000 noble-server-cloudimg-amd64.img ssd-data
