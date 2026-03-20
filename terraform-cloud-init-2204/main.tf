@@ -12,7 +12,7 @@ resource "proxmox_vm_qemu" "vm" {
   target_node = var.target_node
   vmid    = "20${count.index + 1}"
   count   = var.vm_count
-  name    = var.vm_name
+  name    = "${var.master_name}${count.index + 1}"
   cores   = var.cpu_cores
   memory  = var.memory 
   agent   = 1
